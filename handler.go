@@ -57,6 +57,7 @@ func (m *MuxHandler) PutHandlerWithOperation(objType string, param HandlerWithOp
 		Pretty:   true,
 		GraphiQL: true,
 	})
+
 	m.opNameHandlerMap[opName] = qlHandler
 }
 
@@ -69,4 +70,12 @@ func (m *MuxHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 	qlHandler.ServeHTTP(w, req)
+}
+
+func (m *MuxHandler) ListOperation() []string {
+	var opNames = make([]string, 0)
+	for opName := range m.opNameHandlerMap {
+		opNames = append(opNames, opName)
+	}
+	return opNames
 }
